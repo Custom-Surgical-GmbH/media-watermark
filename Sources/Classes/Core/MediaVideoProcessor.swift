@@ -12,7 +12,7 @@ import AVFoundation
 let kMediaContentDefaultScale: CGFloat = 1
 let kProcessedTemporaryVideoFileName = "/processed.mov"
 let kMediaContentTimeValue: Int64 = 1
-let kMediaContentTimeScale: Int32 = 30
+//let kMediaContentTimeScale: Int32 = 30
 
 extension MediaProcessor {
     func processVideoWithElements(item: MediaItem, completion: @escaping ProcessCompletionHandler) {
@@ -53,8 +53,10 @@ extension MediaProcessor {
         parentLayer.addSublayer(videoLayer)
         parentLayer.addSublayer(optionalLayer)
         
+        let fps = Int32(item.sourceAsset.tracks(withMediaType: .video).first!.nominalFrameRate)
+        
         let videoComposition = AVMutableVideoComposition()
-        videoComposition.frameDuration = CMTimeMake(value: kMediaContentTimeValue, timescale: kMediaContentTimeScale)
+        videoComposition.frameDuration = CMTimeMake(value: kMediaContentTimeValue, timescale: fps)
         videoComposition.renderSize = sizeOfVideo
         videoComposition.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
         
